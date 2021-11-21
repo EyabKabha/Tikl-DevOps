@@ -22,6 +22,34 @@ Forked *spring-projects/spring-petclinic* project from github
 
 [<img src="pipeline.png" width="750"/>](pipeline.png)
 
+**Note:**  below you can copy the following pipeline and run it
+
+```
+pipeline {
+    agent any
+    stages{
+        stage("Build"){
+            steps{
+                git branch: 'main' , url:'https://github.com/EyabKabha/spring-petclinic.git'
+                bat './mvnw clean'
+            }
+        }
+        stage("Test"){
+            steps{
+                bat './mvnw test'
+            }
+            
+          post {
+            always {
+              junit(
+                allowEmptyResults: true,
+                testResults: '**target/surefire-reports/TEST-*.xml')
+                }
+            }
+        }
+    }
+}
+```
 
 ## How the pipeline work?
 
